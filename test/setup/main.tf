@@ -27,6 +27,20 @@ module "project" {
   activate_apis = [
     "cloudresourcemanager.googleapis.com",
     "storage-api.googleapis.com",
-    "serviceusage.googleapis.com"
+    "serviceusage.googleapis.com",
+    "anthos.googleapis.com",
+    "anthosaudit.googleapis.com",
+    "anthosgke.googleapis.com",
+    "connectgateway.googleapis.com",
+    "container.googleapis.com",
+    "gkeconnect.googleapis.com",
+    "gkehub.googleapis.com",
+    "serviceusage.googleapis.com",
+    "stackdriver.googleapis.com",
+    "monitoring.googleapis.com",
+    "logging.googleapis.com",
+    "opsconfigmonitoring.googleapis.com"
   ]
+
+  disable_services_on_destroy = false
 }
