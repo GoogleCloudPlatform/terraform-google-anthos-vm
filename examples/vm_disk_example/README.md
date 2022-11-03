@@ -1,20 +1,18 @@
-# Simple Example
+# VM Disk Example
 
-This example illustrates how to use the `anthos-vm` module.
+This example illustrates how to use the `anthos-vm:vm-disk` sub-module.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| bucket\_name | The name of the bucket to create. | `string` | n/a | yes |
-| project\_id | The ID of the project in which to provision resources. | `string` | n/a | yes |
+| gcs\_secret | The secret name to pull from GCS bucket. | `string` | `""` | no |
+| kubeconfig\_path | The path to the kubeconfig file. | `string` | n/a | yes |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| bucket\_name | The name of the bucket. |
+No output.
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 

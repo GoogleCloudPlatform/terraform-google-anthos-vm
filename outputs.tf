@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
-output "bucket_name" {
-  value = google_storage_bucket.main.name
+output "vm_name" {
+  value = kubernetes_manifest.vm_instance.manifest.metadata.name
+}
+
+output "vm_namespace" {
+  value = kubernetes_manifest.vm_instance.manifest.metadata.namespace
 }

@@ -2,7 +2,7 @@
 The module is to create individual VM disks that will be used by Anthos VMs.
 It supports both the empty disk or disk with images from given data sources.
 
-
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -22,3 +22,4 @@ It supports both the empty disk or disk with images from given data sources.
 | disk\_name | Name of the VM disk. |
 | disk\_namespace | Namespace of the VM disk. |
 
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

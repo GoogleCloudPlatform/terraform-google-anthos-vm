@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-terraform {
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "~> 4.0"
-    }
-  }
-  required_version = ">= 0.13"
+variable "kubeconfig_path" {
+  description = "The path to the kubeconfig file."
+  type        = string
+}
+
+variable "gcs_secret" {
+  type        = string
+  description = "The secret name to pull from GCS bucket."
 }

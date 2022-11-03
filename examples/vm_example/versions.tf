@@ -14,7 +14,12 @@
  * limitations under the License.
  */
 
-output "bucket_name" {
-  description = "The name of the bucket."
-  value       = module.anthos_vm.bucket_name
+terraform {
+  required_providers {
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "~> 2.15"
+    }
+  }
+  required_version = ">= 1.3.0"
 }
