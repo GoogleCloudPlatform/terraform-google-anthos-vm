@@ -24,3 +24,27 @@ variable "folder_id" {
 variable "billing_account" {
   description = "The billing account id associated with the project, e.g. XXXXXX-YYYYYY-ZZZZZZ"
 }
+
+variable "abm_version" {
+  type        = string
+  default     = "1.13.0"
+  description = "The version of Anthos Bare Metal."
+}
+
+variable "controlplane_node_count" {
+  type        = number
+  default     = 1
+  description = "Number of the control plane nodes."
+}
+
+variable "worker_node_count" {
+  type        = number
+  default     = 2
+  description = "Number of the worker nodes."
+}
+
+variable "node_prefix" {
+  type        = string
+  default     = "abm"
+  description = "The prefix of the node name."
+}

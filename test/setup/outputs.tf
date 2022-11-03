@@ -18,7 +18,34 @@ output "project_id" {
   value = module.project.project_id
 }
 
-output "sa_key" {
-  value     = google_service_account_key.int_test.private_key
-  sensitive = true
+output "sa" {
+  value = google_service_account.int_test.email
+}
+
+output "workstation" {
+  value       = local.workstation_node
+  description = "The host name of the workstation node."
+}
+
+output "workers" {
+  value       = local.worker_nodes
+  description = "The list of worker nodes."
+}
+
+output "kubeconfig_path" {
+  value       = local.kubeconfig
+  description = "The kubeconfig path on the workstation."
+  depends_on = [
+    null_resource.abm_cluster
+  ]
+}
+
+output "zone" {
+  value       = local.zone
+  description = "GCP zone of the cluster."
+}
+
+output "gcs_secret" {
+  value       = local.gcs_secret_ref
+  description = "The secret name to access GCS bucket."
 }

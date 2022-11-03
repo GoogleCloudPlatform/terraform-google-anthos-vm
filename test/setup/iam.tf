@@ -16,7 +16,14 @@
 
 locals {
   int_required_roles = [
-    "roles/owner"
+    "roles/owner",
+    "roles/gkehub.connect",
+    "roles/gkehub.admin",
+    "roles/logging.logWriter",
+    "roles/monitoring.metricWriter",
+    "roles/monitoring.dashboardEditor",
+    "roles/stackdriver.resourceMetadata.writer",
+    "roles/opsconfigmonitoring.resourceMetadata.writer",
   ]
 }
 
