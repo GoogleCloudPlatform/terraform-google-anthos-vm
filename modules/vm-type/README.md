@@ -1,7 +1,7 @@
 ## VM Type Submodule for Anthos VM
 The module is to create common compute types that can be referenced in Anthos VMs.
 
-
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -22,3 +22,4 @@ The module is to create common compute types that can be referenced in Anthos VM
 |------|-------------|
 | vm\_type\_name | Name of the VM type. |
 
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
