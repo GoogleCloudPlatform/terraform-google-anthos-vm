@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,4 +23,9 @@ variable "gcs_secret" {
   type        = string
   default     = ""
   description = "The secret name to pull from GCS bucket."
+}
+
+variable "gcs_images" {
+  type        = map(string)
+  description = "Map of the image name to GCS URL. The key is an arbitary string and the value is the GCS URL of the VM image."
 }

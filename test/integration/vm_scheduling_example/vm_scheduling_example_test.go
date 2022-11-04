@@ -14,14 +14,21 @@
  * limitations under the License.
  */
 
-output "disk_namespace" {
-  value       = kubernetes_manifest.disk.manifest.metadata.namespace
-  description = "Namespace of the VM disk."
-  depends_on  = []
-}
+package vmschedulingexample
 
-output "disk_name" {
-  value       = kubernetes_manifest.disk.manifest.metadata.name
-  description = "Name of the VM disk."
-  depends_on  = []
+import (
+	"testing"
+
+	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/tft"
+	"github.com/terraform-google-modules/anthos-vm/test/integration/remote"
+)
+
+func TestVMSchedulingExample(t *testing.T) {
+	example := tft.NewTFBlueprintTest(t)
+	abmTest := remote.NewABMTest(t, example)
+	example.DefineInit(abmTest.Init)
+	example.DefineApply(abmTest.Apply)
+	example.DefineVerify(abmTest.Verify)
+	example.DefineTeardown(abmTest.Teardown)
+	example.Test()
 }

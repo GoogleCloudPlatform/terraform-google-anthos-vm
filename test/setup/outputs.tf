@@ -45,6 +45,11 @@ output "zone" {
   description = "GCP zone of the cluster."
 }
 
+output "gcs_images" {
+  value       = { for i in google_storage_bucket_object.images : i.name => "${google_storage_bucket.vm_images.url}/${i.name}" }
+  description = "Map of the image name to GCS URL. The key is an arbitary string and the value is the GCS URL of the VM image."
+}
+
 output "gcs_secret" {
   value       = local.gcs_secret_ref
   description = "The secret name to access GCS bucket."
