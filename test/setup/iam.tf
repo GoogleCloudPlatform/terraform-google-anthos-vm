@@ -24,6 +24,7 @@ locals {
     "roles/monitoring.dashboardEditor",
     "roles/stackdriver.resourceMetadata.writer",
     "roles/opsconfigmonitoring.resourceMetadata.writer",
+    "roles/storage.admin",
   ]
 }
 

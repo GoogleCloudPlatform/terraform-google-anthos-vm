@@ -18,10 +18,20 @@ provider "kubernetes" {
   config_path = var.kubeconfig_path
 }
 
+resource "kubernetes_secret" "script" {
+  metadata {
+    name = "startup-script"
+  }
+
+  data = {
+    script = base64encode("echo \"script in k8s secret\"")
+  }
+}
+
 module "anthos_vm" {
   source = "../.."
 
-  name = "anthos-vm"
+  name = "myvm"
   boot_disk_gcs_source = {
     url       = var.gcs_images["ubuntu2004"]
     secretRef = var.gcs_secret
@@ -29,40 +39,20 @@ module "anthos_vm" {
   boot_disk_size = "20Gi"
   vcpus          = 2
   memory         = "8Gi"
-}
-
-module "boot_disk" {
-  source = "../../modules/vm-disk"
-  gcs_source = {
-    url       = var.gcs_images["ubuntu2004"]
-    secretRef = var.gcs_secret
-  }
-  name      = "boot-disk"
-  disk_size = "20Gi"
-}
-
-module "data_disk" {
-  source    = "../../modules/vm-disk"
-  name      = "data-disk"
-  disk_size = "20Gi"
-}
-
-module "vm_type" {
-  source = "../../modules/vm-type"
-  name   = "myvmtype"
-  vcpus  = 4
-  memory = "8Gi"
-}
-
-module "anthos_vm_with_ref" {
-  source         = "../.."
-  name           = "anthos-vm-with-ref"
-  boot_disk_name = module.boot_disk.disk_name
-  vm_type_name   = module.vm_type.vm_type_name
-  extra_disks = [
+  startup_scripts = [
     {
-      name = module.data_disk.disk_name
-    }
+      name   = "plan_text_script"
+      script = "echo \"plan text script\""
+    },
+    {
+      name         = "base64_encoded_script"
+      scriptBase64 = base64encode("echo \"base64 endoded script\"")
+    },
+    {
+      name = "script_in_secret"
+      scriptSecretRef = {
+        name = kubernetes_secret.script.metadata[0].name
+      }
+    },
   ]
 }
-

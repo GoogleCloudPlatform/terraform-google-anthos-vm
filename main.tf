@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ locals {
   spec_base = {
     osType                           = local.os_type
     compute                          = local.compute
-    scheduling                       = var.scheduling
+    scheduling                       = var.scheduling == null ? null : { for k, v in var.scheduling : k => v if v != null }
     autoRestartOnConfigurationChange = var.auto_restart_on_config_change
     # autoInstallGuestAgent            = var.auto_install_guest_agent
     gpu      = var.vm_type_name == "" ? var.gpu : null

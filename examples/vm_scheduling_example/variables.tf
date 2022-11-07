@@ -14,14 +14,22 @@
  * limitations under the License.
  */
 
-output "disk_namespace" {
-  value       = kubernetes_manifest.disk.manifest.metadata.namespace
-  description = "Namespace of the VM disk."
-  depends_on  = []
+variable "kubeconfig_path" {
+  description = "The path to the kubeconfig file."
+  type        = string
 }
 
-output "disk_name" {
-  value       = kubernetes_manifest.disk.manifest.metadata.name
-  description = "Name of the VM disk."
-  depends_on  = []
+variable "gcs_secret" {
+  type        = string
+  description = "The secret name to pull from GCS bucket."
+}
+
+variable "workers" {
+  type        = list(string)
+  description = "List of worker nodes."
+}
+
+variable "gcs_images" {
+  type        = map(string)
+  description = "Map of the image name and GCS URL."
 }

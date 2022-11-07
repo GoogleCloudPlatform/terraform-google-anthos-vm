@@ -44,3 +44,33 @@ module "project" {
 
   disable_services_on_destroy = false
 }
+
+resource "google_storage_bucket" "vm_images" {
+  name                        = "${module.project.project_id}-vm-images"
+  location                    = "US-CENTRAL1"
+  project                     = module.project.project_id
+  uniform_bucket_level_access = true
+  force_destroy               = true
+}
+
+resource "null_resource" "download_images" {
+  count = length(var.vm_images)
+  triggers = {
+    image_name = var.vm_images[count.index].name
+    image_url  = var.vm_images[count.index].url
+  }
+
+  provisioner "local-exec" {
+    command = "curl --create-dirs -o ${local.tmp_dir}/${self.triggers.image_name} ${self.triggers.image_url}"
+  }
+}
+
+resource "google_storage_bucket_object" "images" {
+  count  = length(var.vm_images)
+  name   = var.vm_images[count.index].name
+  source = "${local.tmp_dir}/${var.vm_images[count.index].name}"
+  bucket = google_storage_bucket.vm_images.name
+  depends_on = [
+    null_resource.download_images,
+  ]
+}

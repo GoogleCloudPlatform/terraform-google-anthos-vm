@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ module "disk_from_gcs" {
   count  = var.gcs_secret == "" ? 0 : 1
   source = "../../modules/vm-disk"
   gcs_source = {
-    url       = "gs://kubevirt-ci-vm-images/focal-server-cloudimg-amd64.img"
+    url       = var.gcs_images["ubuntu2004"]
     secretRef = var.gcs_secret
   }
   name      = "disk-gcs-source"

@@ -7,6 +7,7 @@ This example illustrates how to use the `anthos-vm` module.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| gcs\_images | Map of the image name to GCS URL. The key is an arbitary string and the value is the GCS URL of the VM image. | `map(string)` | n/a | yes |
 | gcs\_secret | The secret name to pull from GCS bucket. | `string` | n/a | yes |
 | kubeconfig\_path | The path to the kubeconfig file. | `string` | n/a | yes |
 

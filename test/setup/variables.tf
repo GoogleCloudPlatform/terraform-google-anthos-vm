@@ -48,3 +48,17 @@ variable "node_prefix" {
   default     = "abm"
   description = "The prefix of the node name."
 }
+
+variable "vm_images" {
+  type = list(object({
+    name = string
+    url  = string
+  }))
+  default = [
+    {
+      name = "ubuntu2004"
+      url  = "https://cloud-images.ubuntu.com/releases/focal/release/ubuntu-20.04-server-cloudimg-amd64.img"
+    }
+  ]
+  description = "A list of VM images that will be uploaded to the GCS."
+}
