@@ -34,6 +34,7 @@ module "anthos_vm" {
   boot_disk_size = "20Gi"
   vcpus          = 2
   memory         = "8Gi"
+  storage_class  = "nfs-csi"
   scheduling = {
     affinity = {
       nodeAffinity = {

@@ -48,4 +48,17 @@ resource "kubernetes_manifest" "disk" {
     }
     spec = { for k, v in local.spec : k => v if v != null }
   }
+
+  wait {
+    condition {
+      type   = "Ready"
+      status = "True"
+    }
+  }
+
+  timeouts {
+    create = var.create_timeout
+    update = var.update_timeout
+    delete = var.delete_timeout
+  }
 }

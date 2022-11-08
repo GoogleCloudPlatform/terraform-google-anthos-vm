@@ -39,6 +39,7 @@ module "anthos_vm" {
   boot_disk_size = "20Gi"
   vcpus          = 2
   memory         = "8Gi"
+  storage_class  = "nfs-csi"
   startup_scripts = [
     {
       name   = "plan_text_script"

@@ -96,6 +96,7 @@ module "boot_disk" {
   name            = local.boot_disk_name
   namespace       = var.namespace
   disk_size       = var.boot_disk_size
+  storage_class   = var.storage_class
   gcs_source      = var.boot_disk_gcs_source
   http_source     = var.boot_disk_http_source
   registry_source = var.boot_disk_registry_source
@@ -110,5 +111,22 @@ resource "kubernetes_manifest" "vm_instance" {
       namespace = var.namespace
     }
     spec = local.spec
+  }
+
+  wait {
+    fields = var.wait_fields
+    dynamic "condition" {
+      for_each = var.wait_conditions
+      content {
+        type   = condition.value["type"]
+        status = condition.value["status"]
+      }
+    }
+  }
+
+  timeouts {
+    create = var.create_timeout
+    update = var.update_timeout
+    delete = var.delete_timeout
   }
 }

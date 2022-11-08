@@ -29,6 +29,11 @@ module "anthos_vm" {
   boot_disk_size = "20Gi"
   vcpus          = 2
   memory         = "8Gi"
+  storage_class  = "nfs-csi"
+
+  wait_fields = {
+    "status.state" = "Running"
+  }
 }
 
 module "boot_disk" {
@@ -37,14 +42,16 @@ module "boot_disk" {
     url       = var.gcs_images["ubuntu2004"]
     secretRef = var.gcs_secret
   }
-  name      = "boot-disk"
-  disk_size = "20Gi"
+  name          = "boot-disk"
+  disk_size     = "20Gi"
+  storage_class = "nfs-csi"
 }
 
 module "data_disk" {
-  source    = "../../modules/vm-disk"
-  name      = "data-disk"
-  disk_size = "20Gi"
+  source        = "../../modules/vm-disk"
+  name          = "data-disk"
+  disk_size     = "20Gi"
+  storage_class = "nfs-csi"
 }
 
 module "vm_type" {
@@ -63,6 +70,14 @@ module "anthos_vm_with_ref" {
     {
       name = module.data_disk.disk_name
     }
+  ]
+  wait_fields = {
+    "status.state" = "Running"
+  }
+  depends_on = [
+    module.vm_type,
+    module.data_disk,
+    module.boot_disk,
   ]
 }
 

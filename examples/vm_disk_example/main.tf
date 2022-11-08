@@ -24,10 +24,11 @@ module "emtpy_disk" {
   disk_size = "10Gi"
 }
 
+# Use a small OS image here because downloading from HTTP is very slow in the test setup.
 module "disk_from_http" {
   source = "../../modules/vm-disk"
   http_source = {
-    url = "https://cloud-images.ubuntu.com/releases/focal/release/ubuntu-20.04-server-cloudimg-amd64.img"
+    url = "https://download.cirros-cloud.net/0.6.0/cirros-0.6.0-x86_64-disk.img"
   }
   name      = "disk-http-source"
   disk_size = "20Gi"

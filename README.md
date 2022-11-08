@@ -15,7 +15,7 @@ provider "kubernetes" {
 
 module "anthos_vm" {
   source  = "terraform-google-modules/anthos-vm/google"
-  version = "~> 0.1"
+  version = "0.0.1"
 
   name = "myvm"
   boot_disk_http_source = {
@@ -44,7 +44,9 @@ Functional examples are included in the
 | boot\_disk\_size | Boot disk size in k8s quantity format(https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/quantity/). | `string` | `"20Gi"` | no |
 | boot\_loader\_type | The initial machine booting options when powering on before loading the kernel. The supported boot options are uefi or bios. | `string` | `""` | no |
 | cloudinit\_nocloud | cloud-init nocloud source https://cloudinit.readthedocs.io/en/latest/topics/datasources/nocloud.html<br>    secretRef : "Then name of a k8s secret that contains the userdata."<br>    userDataBase64 : "Userdata as a base64 encoded string."<br>    userData : "Inline userdata."<br>    networkDataSecretRef : "The name of a k8s secret that contains the networkdata."<br>    networkDataBase64 : "Networkdata as a base64 encoded string."<br>    networkData : "Inline networkdata" | <pre>object({<br>    secretRef = optional(object({<br>      name = string<br>    }))<br>    userDataBase64 = optional(string)<br>    userData       = optional(string)<br>    networkDataSecretRef = optional(object({<br>      name = string<br>    }))<br>    networkDataBase64 = optional(string)<br>    networkData       = optional(string)<br>  })</pre> | `null` | no |
+| create\_timeout | Timeout for the disk creation. | `string` | `"10m"` | no |
 | dedicated\_cpu | If the VM should be allocated dedicated host CPU cores and each VM CPU core is pinned to each allocated host CPU core. | `bool` | `false` | no |
+| delete\_timeout | Timeout for the disk deletion. | `string` | `"1m"` | no |
 | enable\_secure\_boot | Whether to assist blocking modified or malicious code from loading. Only work with UEFI bootloader | `bool` | `true` | no |
 | extra\_disks | A list of existing disks that will be used by the VM.<br>    name : "Name of the VM disk in the same namespace"<br>    readonly : "If the VM disk is readonly."<br>    auto\_delete : "If to delete the VM disk when the VM is deleted." | <pre>list(object({<br>    name        = string<br>    readonly    = optional(bool, false)<br>    auto_delete = optional(bool, false)<br>  }))</pre> | `[]` | no |
 | extra\_interfaces | A list of existing disks that will be used by the VM.<br>    name : "Name of the network interface in the VM."<br>    network : "Name of the Anthos network object."<br>    ips : "A list of IP addresses from the network to be allocated to the VM." | <pre>list(object({<br>    name    = string<br>    network = string<br>    ips     = list(string)<br>  }))</pre> | `[]` | no |
@@ -61,8 +63,11 @@ Functional examples are included in the
 | scheduling | nodeSelector : "The node labels that the host node of this VM must have."<br>    affinity : "The affinity rules of the VM. The object needs to align with the k8s Affinity type."<br>    tolerations : "Allows the VM to schedule onto nodes with matching taints. The list elements should have the type align with k8s Toleration type." | <pre>object({<br>    nodeSelector = optional(map(string))<br>    affinity     = optional(any)<br>    tolerations  = optional(list(any))<br>  })</pre> | `null` | no |
 | startup\_scripts | A list of startup scripts of the VM.<br>    name : "The name of a script."<br>    script : "The plain text string of the script."<br>    scriptBase64 : "The base64 encoded string of the script."<br>    scriptSecretRef : "The name of a k8s secret that contains the script." | <pre>list(object({<br>    name         = string<br>    script       = optional(string)<br>    scriptBase64 = optional(string)<br>    scriptSecretRef = optional(object({<br>      name = string<br>    }))<br>  }))</pre> | `null` | no |
 | storage\_class | The name of storage class used to provision the disks | `string` | `"local-shared"` | no |
+| update\_timeout | Timeout for the disk udpate. | `string` | `"10m"` | no |
 | vcpus | Number of VCPUs | `number` | `1` | no |
 | vm\_type\_name | Name of the exsiting virtual machine type | `string` | `""` | no |
+| wait\_conditions | A list of conditions to wait for. | <pre>list(object({<br>    type   = string<br>    status = string<br>  }))</pre> | `[]` | no |
+| wait\_fields | A map of fields and a corresponding regular expression with a pattern to wait for. The provider will wait until the field matches the regular expression. Use `*` for any value. | `map(string)` | <pre>{<br>  "status.state": "Running"<br>}</pre> | no |
 
 ## Outputs
 
