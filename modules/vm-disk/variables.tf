@@ -84,3 +84,21 @@ variable "storage_class" {
   default     = "local-shared"
   description = "The name of storage class used to provision the disks"
 }
+
+variable "create_timeout" {
+  type        = string
+  default     = "10m"
+  description = "Timeout for the disk creation."
+}
+
+variable "update_timeout" {
+  type        = string
+  default     = "10m"
+  description = "Timeout for the disk udpate."
+}
+
+variable "delete_timeout" {
+  type        = string
+  default     = "1m"
+  description = "Timeout for the disk deletion."
+}
