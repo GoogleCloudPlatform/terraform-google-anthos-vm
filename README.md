@@ -15,7 +15,7 @@ provider "kubernetes" {
 
 module "anthos_vm" {
   source  = "terraform-google-modules/anthos-vm/google"
-  version = "0.0.1"
+  version = "~> 0.1"
 
   name = "myvm"
   boot_disk_http_source = {
