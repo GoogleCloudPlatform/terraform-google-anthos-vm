@@ -25,6 +25,6 @@ terraform {
   }
 
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-anthos-vm/v0.0.1"
+    module_name = "blueprints/terraform/terraform-google-anthos-vm/v0.1.0"
   }
 }
