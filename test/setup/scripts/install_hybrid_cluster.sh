@@ -83,7 +83,7 @@ do
     vm=${VMs[$i]}
     gcloud compute ssh root@"$vm" --zone "${ZONE}" << EOF
         apt-get -qq update > /dev/null
-        apt-get -qq install -y jq > /dev/null
+        apt-get -qq install -y jq nfs-common > /dev/null
         set -x
         ip link add vxlan0 type vxlan id 42 dev ens4 dstport 0
         current_ip=\$(ip --json a show dev ens4 | jq '.[0].addr_info[0].local' -r)
@@ -149,11 +149,15 @@ export GOOGLE_APPLICATION_CREDENTIALS=/root/bm-gcr.json
 bmctl create config -c ${CLUSTER_ID}
 EOF
 gcloud compute scp --zone "${ZONE}" "${CLUSTER_YAML_FILE}" root@"${VM_WS}":/root/bmctl-workspace/"${CLUSTER_ID}"/"${CLUSTER_ID}".yaml
+gcloud compute scp --zone "${ZONE}" "${NFS_YAML_FILE}" root@"${VM_WS}":/root/nfs-csi.yaml
 gcloud compute ssh root@"${VM_WS}" --zone "${ZONE}" <<EOF
 set -x
 export GOOGLE_APPLICATION_CREDENTIALS=/root/bm-gcr.json
+export KUBECONFIG=/root/bmctl-workspace/${CLUSTER_ID}/${CLUSTER_ID}-kubeconfig
 bmctl create cluster -c ${CLUSTER_ID}
-bmctl enable vmruntime --kubeconfig=/root/bmctl-workspace/${CLUSTER_ID}/${CLUSTER_ID}-kubeconfig
+bmctl enable vmruntime --kubeconfig=\${KUBECONFIG}
+bash -c 'curl -skSL https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/v3.1.0/deploy/install-driver.sh | bash -s v3.1.0 --'
+kubectl apply -f nfs-csi.yaml
 EOF
 
 # [END anthos_bm_gcp_bash_hybrid_install_abm]

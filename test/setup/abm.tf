@@ -33,6 +33,8 @@ locals {
   cluster_yaml_template_file = "templates/anthos_gce_cluster.tpl"
   kubeconfig                 = "/root/bmctl-workspace/${local.cluster_id}/${local.cluster_id}-kubeconfig"
   gcs_secret_ref             = "gcs-sa"
+  nfs_yaml_template_file     = "templates/nfs-csi.tpl"
+  nfs_yaml_file              = "nfs-csi.yaml"
 }
 
 resource "local_sensitive_file" "credentials_file" {
@@ -47,7 +49,7 @@ resource "local_file" "destroy_script" {
   content              = <<EOT
 #!/bin/bash
 printf "🔄 Activating Service Account[%s]...\n" "$SERVICE_ACCOUNT"
-gcloud auth activate-service-account --project=${module.project.project_id} --key-file=${local_sensitive_file.credentials_file.filename}
+gcloud auth activate-service-account --project=${module.project.project_id} --key-file=${abspath(local_sensitive_file.credentials_file.filename)}
 printf "✅ Service Account activated.\n\n"
 
 printf "🔄 Deleting GCE VMs...\n"
@@ -117,6 +119,58 @@ resource "google_compute_firewall" "ssh" {
   ]
 }
 
+resource "google_filestore_instance" "abm_nfs" {
+  name     = "${substr(local.cluster_id, 0, min(12, length(local.cluster_id)))}-nfs"
+  location = local.zone
+  tier     = "STANDARD"
+  project  = module.project.project_id
+
+  file_shares {
+    capacity_gb = 1024
+    name        = "${local.cluster_id}_fs"
+  }
+
+  networks {
+    network = google_compute_network.default.name
+    modes   = ["MODE_IPV4"]
+  }
+
+  depends_on = [
+    google_compute_network.default,
+    google_project_iam_member.int_test,
+  ]
+}
+
+resource "google_compute_firewall" "filestore_ingress" {
+  name    = "filestore-ingress"
+  network = google_compute_network.default.name
+  project = module.project.project_id
+
+  allow {
+    protocol = "tcp"
+    ports    = ["111", "2046", "2049", "2050", "4045"]
+  }
+
+  source_ranges = google_filestore_instance.abm_nfs.networks[0].ip_addresses
+
+  depends_on = [
+    google_compute_network.default,
+  ]
+}
+
+// Generate the Anthos bare metal nfs yaml file using the template.
+resource "local_file" "nfs_yaml" {
+  filename = "${local.tmp_dir}/${local.nfs_yaml_file}"
+  content = templatefile(local.nfs_yaml_template_file, {
+    nfs_server = google_filestore_instance.abm_nfs.networks[0].ip_addresses[0]
+    nfs_share  = google_filestore_instance.abm_nfs.file_shares[0].name
+  })
+  depends_on = [
+    google_filestore_instance.abm_nfs,
+    google_compute_firewall.filestore_ingress,
+  ]
+}
+
 resource "local_file" "cluster_yaml_bundledlb" {
   filename = "${local.tmp_dir}/${local.cluster_yaml_file}"
   content = templatefile(local.cluster_yaml_template_file, {
@@ -146,12 +200,13 @@ resource "null_resource" "abm_cluster" {
       ZONE              = local.zone
       CLUSTER_ID        = local.cluster_id
       SERVICE_ACCOUNT   = google_service_account.int_test.email
-      CREDENTIALS_FILE  = local_sensitive_file.credentials_file.filename
+      CREDENTIALS_FILE  = abspath(local_sensitive_file.credentials_file.filename)
       ABM_VERSION       = var.abm_version
       NODE_NAMES        = join(",", local.node_names)
       VXLAN_IPS         = join(",", [for name in local.node_names : local.node_vxlan_ips[name]])
-      CLUSTER_YAML_FILE = local_file.cluster_yaml_bundledlb.filename
+      CLUSTER_YAML_FILE = abspath(local_file.cluster_yaml_bundledlb.filename)
       NETWORK           = google_compute_network.default.name
+      NFS_YAML_FILE     = abspath(local_file.nfs_yaml.filename)
     }
   }
 
@@ -168,6 +223,7 @@ resource "null_resource" "abm_cluster" {
     local_sensitive_file.credentials_file,
     local_file.destroy_script,
     google_project_iam_member.int_test,
+    local_file.nfs_yaml,
   ]
 }
 
@@ -177,7 +233,7 @@ module "gcloud" {
 
   platform                 = "linux"
   skip_download            = true
-  service_account_key_file = local_sensitive_file.credentials_file.filename
+  service_account_key_file = abspath(local_sensitive_file.credentials_file.filename)
 
   create_cmd_entrypoint  = "gcloud"
   create_cmd_body        = "compute ssh --project=${module.project.project_id} --zone=${local.zone} root@${local.workstation_node} --command=\"kubectl --kubeconfig=${local.kubeconfig} create secret generic ${local.gcs_secret_ref} --from-file=creds-gcp.json=bm-gcr.json\""

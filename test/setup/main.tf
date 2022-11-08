@@ -39,7 +39,8 @@ module "project" {
     "stackdriver.googleapis.com",
     "monitoring.googleapis.com",
     "logging.googleapis.com",
-    "opsconfigmonitoring.googleapis.com"
+    "opsconfigmonitoring.googleapis.com",
+    "file.googleapis.com"
   ]
 
   disable_services_on_destroy = false

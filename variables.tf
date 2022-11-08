@@ -284,3 +284,39 @@ variable "extra_interfaces" {
     ips : "A list of IP addresses from the network to be allocated to the VM."
   EOT
 }
+
+# Status check
+variable "wait_fields" {
+  type = map(string)
+  default = {
+    "status.state" = "Running"
+  }
+  description = "A map of fields and a corresponding regular expression with a pattern to wait for. The provider will wait until the field matches the regular expression. Use `*` for any value."
+}
+
+variable "wait_conditions" {
+  type = list(object({
+    type   = string
+    status = string
+  }))
+  default     = []
+  description = "A list of conditions to wait for."
+}
+
+variable "create_timeout" {
+  type        = string
+  default     = "10m"
+  description = "Timeout for the disk creation."
+}
+
+variable "update_timeout" {
+  type        = string
+  default     = "10m"
+  description = "Timeout for the disk udpate."
+}
+
+variable "delete_timeout" {
+  type        = string
+  default     = "1m"
+  description = "Timeout for the disk deletion."
+}
