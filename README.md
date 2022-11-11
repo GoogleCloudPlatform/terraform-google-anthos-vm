@@ -14,7 +14,7 @@ provider "kubernetes" {
 }
 
 module "anthos_vm" {
-  source  = "terraform-google-modules/anthos-vm/google"
+  source  = "GoogleCloudPlatform/anthos-vm/google"
   version = "~> 0.1"
 
   name = "myvm"
