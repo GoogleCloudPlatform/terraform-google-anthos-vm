@@ -30,6 +30,6 @@ terraform {
   }
 
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-anthos-vm:vm-disk/v0.1.0"
+    module_name = "blueprints/terraform/terraform-google-anthos-vm:vm-disk/v0.1.1"
   }
 }
