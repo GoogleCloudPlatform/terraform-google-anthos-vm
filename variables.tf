@@ -44,12 +44,6 @@ variable "guest_environment" {
   EOT
 }
 
-variable "auto_install_guest_agent" {
-  type        = bool
-  default     = true
-  description = "If auto install/upgrade the guest agent binary when bringing up a VM."
-}
-
 variable "auto_restart_on_config_change" {
   type        = bool
   default     = false

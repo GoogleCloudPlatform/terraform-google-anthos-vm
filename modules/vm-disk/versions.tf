@@ -22,6 +22,11 @@ terraform {
       source  = "hashicorp/kubernetes"
       version = "~> 2.15"
     }
+
+    null = {
+      source  = "hashicorp/null"
+      version = "~> 3.2"
+    }
   }
 
   provider_meta "google" {
