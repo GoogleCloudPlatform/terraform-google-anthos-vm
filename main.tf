@@ -56,9 +56,8 @@ locals {
     compute                          = local.compute
     scheduling                       = var.scheduling == null ? null : { for k, v in var.scheduling : k => v if v != null }
     autoRestartOnConfigurationChange = var.auto_restart_on_config_change
-    # autoInstallGuestAgent            = var.auto_install_guest_agent
-    gpu      = var.vm_type_name == "" ? var.gpu : null
-    firmware = local.firmware
+    gpu                              = var.vm_type_name == "" ? var.gpu : null
+    firmware                         = local.firmware
     guestEnvironment = var.guest_environment == null ? null : {
       accessManagement = var.guest_environment.enable_access_management ? {
         enable = var.guest_environment.enable_access_management
@@ -86,6 +85,10 @@ locals {
         networkName = intf["network"]
         ipAddresses = intf["ips"]
     }])
+    cloudInit = var.cloudinit_nocloud == null ? null : {
+      noCloud = { for k, v in var.cloudinit_nocloud : k => v if v != null }
+    }
+    startupScripts = var.startup_scripts == null ? null : [for s in var.startup_scripts : { for k, v in s : k => v if v != null }]
   }
   spec = { for k, v in local.spec_base : k => v if v != null } # Remove the sections if they are null
 }

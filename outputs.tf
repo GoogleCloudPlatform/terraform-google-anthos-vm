@@ -15,9 +15,11 @@
  */
 
 output "vm_name" {
-  value = kubernetes_manifest.vm_instance.manifest.metadata.name
+  value       = kubernetes_manifest.vm_instance.manifest.metadata.name
+  description = "The name of the VM."
 }
 
 output "vm_namespace" {
-  value = kubernetes_manifest.vm_instance.manifest.metadata.namespace
+  value       = kubernetes_manifest.vm_instance.manifest.metadata.namespace
+  description = "The namespace of the VM."
 }

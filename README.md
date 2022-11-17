@@ -35,7 +35,6 @@ Functional examples are included in the
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| auto\_install\_guest\_agent | If auto install/upgrade the guest agent binary when bringing up a VM. | `bool` | `true` | no |
 | auto\_restart\_on\_config\_change | whether to automatically restart a VM to pick up configuration changes. | `bool` | `false` | no |
 | boot\_disk\_gcs\_source | url : "URL of the GCS source"<br>    secretRef : "A Secret reference needed to access the GCS source" | <pre>object({<br>    url       = string<br>    secretRef = optional(string)<br>  })</pre> | `null` | no |
 | boot\_disk\_http\_source | url : "URL of the http(s) endpoint"<br>    secretRef : "A Secret reference which contains accessKeyId (user name) base64 encoded, and secretKey (password) also base64 encoded"<br>    certConfigMap : "A configmap reference which contains a Certificate Authority(CA) public key, and a base64 encoded pem certificate"<br>    extraHeaders : "A list of strings containing extra headers to include with HTTP transfer requests"<br>    secretExtraHeaders : "A list of Secret references, each containing an extra HTTP header that may include sensitive information" | <pre>object({<br>    url                = string<br>    secretRef          = optional(string)<br>    certConfigMap      = optional(string)<br>    extraHeaders       = optional(list(string))<br>    secretExtraHeaders = optional(list(string))<br>  })</pre> | `null` | no |
@@ -73,8 +72,8 @@ Functional examples are included in the
 
 | Name | Description |
 |------|-------------|
-| vm\_name | n/a |
-| vm\_namespace | n/a |
+| vm\_name | The name of the VM. |
+| vm\_namespace | The namespace of the VM. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
