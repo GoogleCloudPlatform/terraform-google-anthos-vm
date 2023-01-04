@@ -27,7 +27,7 @@ variable "billing_account" {
 
 variable "abm_version" {
   type        = string
-  default     = "1.13.0"
+  default     = "1.14.0"
   description = "The version of Anthos Bare Metal."
 }
 
