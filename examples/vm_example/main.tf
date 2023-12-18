@@ -19,7 +19,8 @@ provider "kubernetes" {
 }
 
 module "anthos_vm" {
-  source = "../.."
+  source  = "GoogleCloudPlatform/anthos-vm/google"
+  version = "~> 0.1"
 
   name = "anthos-vm"
   boot_disk_gcs_source = {
@@ -37,7 +38,9 @@ module "anthos_vm" {
 }
 
 module "boot_disk" {
-  source = "../../modules/vm-disk"
+  source  = "GoogleCloudPlatform/anthos-vm/google//modules/vm-disk"
+  version = "~> 0.1"
+
   gcs_source = {
     url       = var.gcs_images["ubuntu2004"]
     secretRef = var.gcs_secret
@@ -48,21 +51,26 @@ module "boot_disk" {
 }
 
 module "data_disk" {
-  source        = "../../modules/vm-disk"
+  source  = "GoogleCloudPlatform/anthos-vm/google//modules/vm-disk"
+  version = "~> 0.1"
+
   name          = "data-disk"
   disk_size     = "20Gi"
   storage_class = "nfs-csi"
 }
 
 module "vm_type" {
-  source = "../../modules/vm-type"
+  source  = "GoogleCloudPlatform/anthos-vm/google//modules/vm-type"
+  version = "~> 0.1"
+
   name   = "myvmtype"
   vcpus  = 4
   memory = "8Gi"
 }
 
 module "anthos_vm_with_ref" {
-  source         = "../.."
+  source         = "GoogleCloudPlatform/anthos-vm/google"
+  version        = "~> 0.1"
   name           = "anthos-vm-with-ref"
   boot_disk_name = module.boot_disk.disk_name
   vm_type_name   = module.vm_type.vm_type_name
