@@ -13,7 +13,7 @@ This example illustrates how to use the `anthos-vm:vm-disk` sub-module.
 
 ## Outputs
 
-No output.
+No outputs.
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
