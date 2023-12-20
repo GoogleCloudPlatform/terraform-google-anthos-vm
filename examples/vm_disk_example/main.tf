@@ -40,6 +40,7 @@ module "disk_from_http" {
 
 module "disk_from_gcs" {
   count   = var.gcs_secret == "" ? 0 : 1
+
   source  = "GoogleCloudPlatform/anthos-vm/google//modules/vm-disk"
   version = "~> 0.1"
 
