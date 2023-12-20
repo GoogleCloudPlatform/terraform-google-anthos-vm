@@ -19,14 +19,18 @@ provider "kubernetes" {
 }
 
 module "emtpy_disk" {
-  source    = "../../modules/vm-disk"
+  source  = "GoogleCloudPlatform/anthos-vm/google//modules/vm-disk"
+  version = "~> 0.1"
+
   name      = "empty-disk"
   disk_size = "10Gi"
 }
 
 # Use a small OS image here because downloading from HTTP is very slow in the test setup.
 module "disk_from_http" {
-  source = "../../modules/vm-disk"
+  source  = "GoogleCloudPlatform/anthos-vm/google//modules/vm-disk"
+  version = "~> 0.1"
+
   http_source = {
     url = "https://download.cirros-cloud.net/0.6.0/cirros-0.6.0-x86_64-disk.img"
   }
@@ -35,8 +39,11 @@ module "disk_from_http" {
 }
 
 module "disk_from_gcs" {
-  count  = var.gcs_secret == "" ? 0 : 1
-  source = "../../modules/vm-disk"
+  count = var.gcs_secret == "" ? 0 : 1
+
+  source  = "GoogleCloudPlatform/anthos-vm/google//modules/vm-disk"
+  version = "~> 0.1"
+
   gcs_source = {
     url       = var.gcs_images["ubuntu2004"]
     secretRef = var.gcs_secret

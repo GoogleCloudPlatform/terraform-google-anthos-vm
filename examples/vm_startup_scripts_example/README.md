@@ -13,7 +13,7 @@ This example illustrates how to add startup scripts to the `anthos-vm`.
 
 ## Outputs
 
-No output.
+No outputs.
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 

@@ -24,7 +24,8 @@ locals {
 
 
 module "anthos_vm" {
-  source = "../.."
+  source  = "GoogleCloudPlatform/anthos-vm/google"
+  version = "~> 0.1"
 
   name = "myvm"
   boot_disk_gcs_source = {

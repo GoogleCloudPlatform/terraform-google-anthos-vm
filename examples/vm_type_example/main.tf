@@ -19,14 +19,18 @@ provider "kubernetes" {
 }
 
 module "general_vm_type" {
-  source = "../../modules/vm-type"
+  source  = "GoogleCloudPlatform/anthos-vm/google//modules/vm-type"
+  version = "~> 0.1"
+
   name   = "general"
   vcpus  = 4
   memory = "8Gi"
 }
 
 module "gpu_vm_type" {
-  source = "../../modules/vm-type"
+  source  = "GoogleCloudPlatform/anthos-vm/google//modules/vm-type"
+  version = "~> 0.1"
+
   name   = "gpu"
   vcpus  = 4
   memory = "8Gi"
@@ -37,7 +41,9 @@ module "gpu_vm_type" {
 }
 
 module "advanced_vm_type" {
-  source                   = "../../modules/vm-type"
+  source  = "GoogleCloudPlatform/anthos-vm/google//modules/vm-type"
+  version = "~> 0.1"
+
   name                     = "advanced"
   vcpus                    = 4
   memory                   = "8Gi"

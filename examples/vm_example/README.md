@@ -13,7 +13,7 @@ This example illustrates how to use the `anthos-vm` module.
 
 ## Outputs
 
-No output.
+No outputs.
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
