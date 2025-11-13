@@ -229,7 +229,7 @@ resource "null_resource" "abm_cluster" {
 
 module "gcloud" {
   source  = "terraform-google-modules/gcloud/google"
-  version = "~> 3.1"
+  version = "~> 4.0"
 
   platform                 = "linux"
   skip_download            = true
