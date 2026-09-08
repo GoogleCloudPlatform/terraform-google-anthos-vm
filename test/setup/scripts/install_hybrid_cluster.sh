@@ -40,7 +40,7 @@ printf "🔄 Creating GCE VMs...\n"
 for vm in "${VMs[@]}"
 do
     gcloud compute instances create "$vm" \
-      --image-family=ubuntu-2004-lts --image-project=ubuntu-os-cloud \
+      --image-family=ubuntu-2204-lts --image-project=ubuntu-os-cloud \
       --zone="${ZONE}" \
       --boot-disk-size 200G \
       --boot-disk-type pd-ssd \
@@ -112,7 +112,7 @@ chmod +x kubectl
 mv kubectl /usr/local/sbin/
 mkdir baremetal && cd baremetal
 gcloud auth activate-service-account --key-file=/root/bm-gcr.json
-gsutil cp gs://anthos-baremetal-release/bmctl/${ABM_VERSION}/linux-amd64/bmctl .
+gcloud storage cp gs://anthos-baremetal-release/bmctl/${ABM_VERSION}/linux-amd64/bmctl .
 chmod a+x bmctl
 mv bmctl /usr/local/sbin/
 cd ~
